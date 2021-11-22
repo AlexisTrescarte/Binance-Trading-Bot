@@ -1,8 +1,10 @@
 import websocket, json
+import config, first_algo_RSI
 
-SOCKET = "wss://stream.binance.com:9443/ws/btcusdt@kline_1m"
+SOCKET = "wss://stream.binance.com:9443/ws/{}@kline_1m".format(config.SYMBOL)
+
 closes = []
-
+algo_RSI = first_algo_RSI.RSI_Algo()
 
 def on_open(ws):
     print("open")
@@ -16,11 +18,13 @@ def on_message(ws, message):
     
     candle = json_message['k']
     is_candle_closed = candle['x']
-    close = candle['c']
-
+    close = float(candle['c'])
+    
     if is_candle_closed:
-        closes.append(close)
         print("candle closed at {}".format(close))
+        closes.append(close)
+        algo_RSI.update(close)
+        
         
 
 ws = websocket.WebSocketApp(SOCKET, on_open=on_open, on_close=on_close, on_message=on_message)
