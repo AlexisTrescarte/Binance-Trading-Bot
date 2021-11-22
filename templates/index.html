@@ -1,25 +1,16 @@
 <html>
     <head>
         <title>Binance Trading Bot</title>
+        <link rel="stylesheet" href="style.css">
         <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     </head>
 
     <Body>
         <h1>Binance Trading Bot</h1>
 
-        <h3>settings</h3>
-        <div id="settings">
-            <input type="checkbox" />
-            RSI
-            <input type="text" id="rsi_length" name="rsi_length" placeholder="14"/>
-            Overbought
-            <input type="text" id="rsi_overbought" name="rsi_overbought" placeholder="70"/>
-            Oversold
-            <input type="text" id="rsi_oversold" name="rsi_oversold" placeholder="30"/>
-        </div>
-        
-        <div id="chart">
+        <div>
             <h2>Bitcoin Value</h2>
+            <div id="chart"></div>
         </div>
 
         <div id="trades"></div>
@@ -33,7 +24,7 @@
             </select>
         </div>
         <div id="user_balances">
-            <h2>Balances</h2>
+            <h2>User Balances</h2>
             <table>
                 {% for balances in user_balances %}
                 <tr>
@@ -49,15 +40,6 @@
             </table>
         </div>
 
-        
-        <!-- <script>
-            var binanceSocket = new WebSocket("wss://stream.binance.com:9443/ws/btcusdt@trade");
-
-            binanceSocket.onmessage = function (event){
-                var messageObject = JSON.parse(event.data)
-                //tradeDiv.append(messageObject.p)
-            }
-        </script> -->
         <script src="{{ url_for('static', filename='chart.js') }}"></script>
     </Body>
 </html>

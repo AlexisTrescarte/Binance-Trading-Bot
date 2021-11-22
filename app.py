@@ -3,6 +3,8 @@ from binance.client import Client
 from binance.enums import *
 import config
 from datetime import datetime, timedelta
+import Python.bot as bot_manager
+
 
 client = Client(config.API_KEY, config.SECRET_KEY)
 
@@ -10,16 +12,21 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-
+    bot_manager.start()
     # Get client account
     account = client.get_account()
     # Get blanace for all crypto
     balances = account['balances']
+    user_balances = []
+    for balance in balances:
+        if(float(balance['free'])>0):
+            user_balances.append(balance)
+
     # Get all the symbols
     exchange_infos = client.get_exchange_info()
     symbols = exchange_infos['symbols']
 
-    return render_template('index.html', user_balances=balances, symbols=symbols)
+    return render_template('index.html', user_balances=user_balances, symbols=symbols)
 
 @app.route('/buy')
 def buy():
