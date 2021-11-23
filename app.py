@@ -1,11 +1,12 @@
 from flask import Flask, render_template, jsonify, request
 from binance.client import Client
 from binance.enums import *
+from Python.bot_manager import BotManager
 import config
 from datetime import datetime, timedelta
 
 client = Client(config.API_KEY, config.SECRET_KEY)
-cmd = 'python ./Python/bot.py'
+bot_manager = BotManager()
 
 app = Flask(__name__)
 
@@ -37,8 +38,9 @@ def settings():
 
 @app.route('/pass_val',methods=['POST'])
 def pass_val():
-    candelstick = request.get_json()
-    print(candelstick)
+    candelstick = (request.get_json())['k']
+    bot_manager.update(candelstick)
+
     return jsonify({'reply':'success'})
 
 @app.route('/history')

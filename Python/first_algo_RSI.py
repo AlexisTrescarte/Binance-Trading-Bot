@@ -13,7 +13,7 @@ class RSI_Algo:
 
     def update(self, new_close_data):
         self.closes_data_list.append(new_close_data)
-
+        print(self.closes_data_list)
         if(len(self.closes_data_list) > 14):
             self.process_rsi()
 
