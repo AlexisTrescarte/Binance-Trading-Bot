@@ -1,6 +1,6 @@
 import backtrader as bt
 
-class RSIStrategy(bt.Strategy):
+class MACDStrategy(bt.Strategy):
     def __init__(self):
         self.rsi = bt.talib.RSI(self.data, period=14)
 
@@ -12,11 +12,20 @@ class RSIStrategy(bt.Strategy):
             self.close()
 
 
+
+
+
+
+
+
+
+
 cerebro = bt.Cerebro()
 
-data = bt.feeds.BacktraderCSVData(dataname='daily.csv', timeframe=bt.TimeFrame.Days)
+data = bt.feeds.GenericCSVData(dataname='daily.csv', dtformat=2)
+
 cerebro.adddata(data)
-cerebro.addstrategy(RSIStrategy)
+cerebro.addstrategy(MACDStrategy)
 cerebro.run()
 
 cerebro.plot()
