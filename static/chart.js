@@ -49,4 +49,28 @@ binanceSocket.onmessage = function (event) {
 		low: candlestick.l,
 		close: candlestick.c
 	});
+
+	
+	$.ajax(
+			{
+				type:'POST',
+				contentType:'application/json',
+				dataType:'json',
+				url:'/pass_val',
+				data: event.data,
+				success:function (data) {
+					var reply=data.reply;
+					if (reply=="success")
+					{
+						return;
+					}
+					else
+					{
+					alert("some error ocured in session agent")
+					}
+	 
+			}
+		}
+	);
+	 
 }

@@ -1,7 +1,6 @@
 import websocket, json
-from Python import config
-from Python import first_algo_RSI as algo_RSI
-import asyncio
+import config
+import first_algo_RSI as algo_RSI
 
 
 SOCKET = "wss://stream.binance.com:9443/ws/{}@kline_1m".format(config.SYMBOL)
@@ -28,6 +27,6 @@ def on_message(ws, message):
         closes.append(close)
         algo_RSI.update(close)
 
-def start():      
-    ws = websocket.WebSocketApp(SOCKET, on_open=on_open, on_close=on_close, on_message=on_message)
-    ws.run_forever()
+    
+ws = websocket.WebSocketApp(SOCKET, on_open=on_open, on_close=on_close, on_message=on_message)
+ws.run_forever()

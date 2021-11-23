@@ -1,18 +1,16 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 from binance.client import Client
 from binance.enums import *
 import config
 from datetime import datetime, timedelta
-import Python.bot as bot_manager
-
 
 client = Client(config.API_KEY, config.SECRET_KEY)
+cmd = 'python ./Python/bot.py'
 
 app = Flask(__name__)
 
 @app.route("/")
 def index():
-    bot_manager.start()
     # Get client account
     account = client.get_account()
     # Get blanace for all crypto
@@ -28,17 +26,20 @@ def index():
 
     return render_template('index.html', user_balances=user_balances, symbols=symbols)
 
-@app.route('/buy')
-def buy():
-    return 'buy'
+@app.route('/bot')
+def bot():
+    return render_template('bot.html')
 
-@app.route('/sell')
-def sell():
-    return 'sell'
 
 @app.route('/settings')
 def settings():
     return 'settings'
+
+@app.route('/pass_val',methods=['POST'])
+def pass_val():
+    candelstick = request.get_json()
+    print(candelstick)
+    return jsonify({'reply':'success'})
 
 @app.route('/history')
 def history():
