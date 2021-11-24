@@ -8,25 +8,22 @@ class RSI_Algo:
     def __init__(self):
         self.closes_data_list = []
         self.rsi_list = []
-        self.actual_rsi = None
         self.in_position = False
 
     def update(self, new_close_data):
-        self.closes_data_list.append(new_close_data)
-        print(self.closes_data_list)
-        if(len(self.closes_data_list) > 14):
+        self.closes_data_list.append(float(new_close_data))
+        
+        if(len(self.closes_data_list) > RSI_PERIOD):
             self.process_rsi()
 
     def process_rsi(self):
         self.closes_data_array = numpy.array(self.closes_data_list)
-        rsi = talib.RSI(self.closes_data_array, RSI_PERIOD)
-        print("rsi : {}".format(rsi))
-        self.rsi_list.append(rsi)
+        self.rsi_list = talib.RSI(self.closes_data_array, RSI_PERIOD)
 
-        if(rsi > RSI_OVERBOUGHT and self.in_position):
+        if((self.get_last_rsi() > RSI_OVERBOUGHT) and self.in_position):
             self.sell()
 
-        if(rsi < RSI_OVERSOLD and not self.in_position):
+        if((self.get_last_rsi() < RSI_OVERSOLD) and not self.in_position):
             self.buy()
         
     def get_rsi_list(self):
