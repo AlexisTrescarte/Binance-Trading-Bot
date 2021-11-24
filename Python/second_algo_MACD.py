@@ -14,8 +14,6 @@ class MACD_Algo:
     def update(self, new_close_data):
         self.closes_data_list.append(float(new_close_data))
 
-        print(self.closes_data_list)
-
         if(len(self.closes_data_list) > MACD_PERIOD):
             self.process_macd()
 
