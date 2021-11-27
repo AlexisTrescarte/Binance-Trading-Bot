@@ -47,8 +47,8 @@ def pass_val():
 def history():
 
     now = datetime.now()
-    first_date = now - timedelta(days = 30)
-    candlesticks = client.get_historical_klines("BTCUSDT", Client.KLINE_INTERVAL_15MINUTE, first_date.strftime("%d %b, %Y"), now.strftime("%d %b, %Y"))
+    first_date = now - timedelta(days = 365)
+    candlesticks = client.get_historical_klines("BTCUSDT", Client.KLINE_INTERVAL_1HOUR, first_date.strftime("%d %b, %Y"), now.strftime("%d %b, %Y"))
     
     processed_candlesticks = []
     for data in candlesticks:
@@ -61,6 +61,7 @@ def history():
         }
         processed_candlesticks.append(candlesticks)
 
+    bot_manager.update_with_history(processed_candlesticks)
     return jsonify(processed_candlesticks)
 
 

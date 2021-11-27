@@ -1,0 +1,29 @@
+import backtrader as bt
+import datetime
+
+# FONCTIONNE BIEN -> 40% depuis janvier
+class EMAStrategy(bt.Strategy):
+    def __init__(self):
+        self.ema_20 = bt.talib.EMA(self.data, timeperiod=50)
+        self.ema_50 = bt.talib.EMA(self.data, timeperiod=100)
+        self.rsi = bt.talib.RSI(self.data, period=50)
+
+    def next(self):
+        if self.ema_20[-2]-self.ema_50[-2]<0 and self.ema_20[-1]-self.ema_50[-1]>0 and self.rsi<60 and not self.position:
+            self.buy(price=self.broker.getcash())
+
+        if self.rsi < 30 and self.position:
+            self.close()
+
+
+
+cerebro = bt.Cerebro()
+
+data = bt.feeds.GenericCSVData(dataname='Backtests\BTC_hour_2021.csv', dtformat=2, close=4, high=2, low=3, timeframe=bt.TimeFrame.Minutes, compression=60, fromdate=datetime.datetime(2021, 1, 1), todate=datetime.datetime(2021, 11, 21) )
+# timeframe=bt.TimeFrame.Minutes, compression=60,
+cerebro.broker.setcash(100000.0)
+cerebro.adddata(data)
+cerebro.addstrategy(EMAStrategy)
+cerebro.run()
+
+cerebro.plot()

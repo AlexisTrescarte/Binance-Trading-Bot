@@ -3,7 +3,7 @@ import backtrader as bt
 class RSIStrategy(bt.Strategy):
     def __init__(self):
         self.rsi = bt.talib.RSI(self.data, period=14)
-
+        
     def next(self):
         if self.rsi < 29 and not self.position:
             self.buy(size=1)

@@ -39,7 +39,7 @@ fetch('http://127.0.0.1:5000//history')
 		candleSeries.setData(response);
 	})
 
-var binanceSocket = new WebSocket("wss://stream.binance.com:9443/ws/btcusdt@kline_1m");
+var binanceSocket = new WebSocket("wss://stream.binance.com:9443/ws/btcusdt@kline_1d");
 binanceSocket.onmessage = function (event) {
 	var candlestick = (JSON.parse(event.data)).k;
 	candleSeries.update({
